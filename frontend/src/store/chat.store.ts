@@ -4,7 +4,7 @@ import { axiosInstance } from "../lib/axios";
 import { useAuthStore } from "./auth.store";
 import type { AxiosResponse } from "axios";
 
-interface Message {
+export interface Message {
   _id: string;
   senderId: string;
   recipientId: string;

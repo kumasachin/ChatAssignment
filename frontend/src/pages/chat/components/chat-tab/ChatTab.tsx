@@ -2,8 +2,13 @@ import { useState } from "react";
 import useUserStore from "../../../../store/user.store.ts";
 import MessageItem from "./components/message/MessageItem.tsx";
 import { useAuthStore } from "../../../../store/auth.store";
+import type { Message } from "../../../../store/chat.store";
 import { useChatStore } from "../../../../store/chat.store";
 import { useEffect, useRef } from "react";
+import {
+  getTimeDifferenceInSeconds,
+  formatTimestamp,
+} from "../../../../utils/time.ts";
 
 const ChatTab = () => {
   const [currentMessage, setCurrentMessage] = useState("");
@@ -87,19 +92,32 @@ const ChatTab = () => {
       >
         <div className="mt-auto">
           {messages?.length > 0 &&
-            messages?.map((message) => (
-              <div key={message.updatedAt || message.createdAt}>
-                <MessageItem
-                  message={message}
-                  key={message._id}
-                  type={
-                    `${selectedUser?._id}` === message.recipientId
-                      ? "sent"
-                      : "received"
-                  }
-                />
-              </div>
-            ))}
+            messages?.map((message: Message, index: number) => {
+              const timeDifference = getTimeDifferenceInSeconds(
+                message.updatedAt || message.createdAt,
+                messages[index - 1]?.updatedAt || messages[index - 1]?.createdAt
+              );
+
+              return (
+                <div key={message.updatedAt || message.createdAt}>
+                  {timeDifference >= 3600 && (
+                    <div className="flex justify-center text-xs text-gray-500 my-[6px]">
+                      {formatTimestamp(message.updatedAt || message.createdAt)}
+                    </div>
+                  )}
+                  <MessageItem
+                    message={message}
+                    key={message._id}
+                    isNotRecent={timeDifference < 21}
+                    type={
+                      `${selectedUser?._id}` === message.recipientId
+                        ? "sent"
+                        : "received"
+                    }
+                  />
+                </div>
+              );
+            })}
         </div>
       </div>
       <div className="p-[20px] px-[10px]">
