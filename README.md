@@ -14,12 +14,14 @@ Most of your time will be spent working in the `frontend/src/pages/chat` directo
 ## 🚀 Getting Started
 
 1. **Clone the repository**
+
    ```bash
    git clone git@github.com:muzzapp/web-lead-tech-test.git
    cd muzz-exercise
    ```
 
 2. **Install dependencies**
+
    ```bash
    # Install frontend dependencies
    cd frontend
@@ -32,6 +34,7 @@ Most of your time will be spent working in the `frontend/src/pages/chat` directo
    ```
 
 3. **Start the development servers**
+
    ```bash
    # Start backend server (from backend directory)
    cd backend
@@ -51,9 +54,9 @@ Most of your time will be spent working in the `frontend/src/pages/chat` directo
 │   │   ├── assets/                 # Static assets like images and hardcoded api
 │   │   ├── components/             # Reusable UI components
 │   │   │   ├── button/
-│   │   │   ├── container/    
-│   │   │   ├── tabs/            
-│   │   │   └── user-card/    
+│   │   │   ├── container/
+│   │   │   ├── tabs/
+│   │   │   └── user-card/
 │   │   ├── pages/                  # Page components
 │   │   │   ├── chat/              # Chat functionality
 │   │   │   │   ├── _components/   # Chat-specific components
@@ -84,6 +87,7 @@ Most of your time will be spent working in the `frontend/src/pages/chat` directo
 ### Backend Starter
 
 We've included a basic backend starter to save you time, but feel free to:
+
 - Use your own backend implementation
 - Modify the existing backend
 - Use a different technology stack
@@ -94,12 +98,14 @@ The current backend is a simple Express.js server with basic user and message en
 ### Key Frontend Directories
 
 - **`frontend/src/pages/chat`**: Contains the main chat functionality
+
   - `_components/chat-tab`: Handles message display and input
   - `_components/message`: Individual message components
   - `_components/header`: Chat header with navigation
   - `_components/profile-tab`: User profile information
 
 - **`frontend/src/store`**: State management
+
   - `messages.store.ts`: Manages chat messages
   - `user.store.ts`: Handles user data and authentication
   - `page.store.ts`: Controls page navigation
@@ -109,3 +115,8 @@ The current backend is a simple Express.js server with basic user and message en
   - `container`: Page container
   - `tabs`: Navigation tabs
   - `user-card`: User display component
+
+### Key updates
+
+- i have created a temprory express js server with mongodb to check data
+- implemented eslint, prettier, husky for git hook and lint staged
