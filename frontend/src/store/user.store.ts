@@ -1,9 +1,10 @@
 import { create } from "zustand";
 
 export type User = {
-  id: number;
+  _id: number;
   name: string;
-  profile: string;
+  profile?: string;
+  email: string;
 };
 
 type UserState = {
@@ -15,9 +16,10 @@ type UserState = {
 
 const useUserStore = create<UserState>()((set) => ({
   currentUser: {
-    id: 1,
+    _id: 1,
     name: "Alisha",
     profile: "https://randomuser.me/api/portraits/women/89.jpg",
+    email: "",
   },
   setCurrentUser: (user: User) => set({ currentUser: user }),
   currentRecipient: null,
