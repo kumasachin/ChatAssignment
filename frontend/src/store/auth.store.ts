@@ -10,9 +10,7 @@ const BASE_URL =
 interface AuthUser {
   _id: string;
   name: string;
-  email: string;
   profile: string;
-  // Add other properties as needed
 }
 
 interface AuthStore {

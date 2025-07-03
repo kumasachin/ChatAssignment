@@ -1,47 +1,22 @@
 [
   {
-    "_id": "6864edcea14cfd8ac889e414",
-    "email": "s1@s1.com",
-    "name": "s1",
-    "profile": "",
-    "createdAt": "2025-07-02T08:29:03.007Z",
-    "updatedAt": "2025-07-02T08:29:03.007Z",
-    "__v": 0
-  },
+      "_id": "6866ef1657ae16029c216b0a",
+      "name": "John",
+      "profile": "https://randomuser.me/api/portraits/men/38.jpg"
+    },
   {
-    "_id": "6864edfaa14cfd8ac889e41b",
-    "email": "s2@s2.com",
-    "name": "s2",
-    "profile": "",
-    "createdAt": "2025-07-02T08:29:46.835Z",
-    "updatedAt": "2025-07-02T08:29:46.835Z",
-    "__v": 0
-  },
+      "_id": "6866ef1a57ae16029c216b0d",
+      "name": "Alisha",
+      "profile": "https://randomuser.me/api/portraits/women/89.jpg"
+    },
   {
-    "_id": "6865075fc96042a591de1c40",
-    "email": "alisha@muzz.com",
-    "name": "Alisha",
-    "profile": "",
-    "createdAt": "2025-07-02T10:18:07.881Z",
-    "updatedAt": "2025-07-02T10:18:07.881Z",
-    "__v": 0
-  },
+      "_id": "6866ef1c57ae16029c216b10",
+      "name": "Maddie",
+      "profile": "https://randomuser.me/api/portraits/women/88.jpg"
+    },
   {
-    "_id": "68650772c96042a591de1c43",
-    "email": "john@muzz.com",
-    "name": "Jhon",
-    "profile": "",
-    "createdAt": "2025-07-02T10:18:26.919Z",
-    "updatedAt": "2025-07-02T10:18:26.919Z",
-    "__v": 0
-  },
-  {
-    "_id": "6865078cc96042a591de1c4a",
-    "email": "maddie@muzz.com",
-    "name": "Maddie",
-    "profile": "",
-    "createdAt": "2025-07-02T10:18:52.933Z",
-    "updatedAt": "2025-07-02T10:18:52.933Z",
-    "__v": 0
+      "_id": "6866f1427fb7f2b5041b373f",
+      "name": "Umran",
+      "profile": "https://randomuser.me/api/portraits/men/38.jpg"
   }
 ]

@@ -2,35 +2,94 @@ import { useState } from "react";
 import useMessagesStore from "../../../../store/messages.store.ts";
 import useUserStore from "../../../../store/user.store.ts";
 import MessageItem from "./components/message/MessageItem.tsx";
+import { useAuthStore } from "../../../../store/auth.store";
+import { useChatStore } from "../../../../store/chat.store";
+import type { Message } from "../../../../store/messages.store.ts";
+import { useEffect, useRef } from "react";
+
+type ExtendedMessage = Message & {
+  recipientId: string;
+  timestamp: string;
+};
 
 const ChatTab = () => {
   const [currentMessage, setCurrentMessage] = useState("");
   const currentUser = useUserStore((state) => state.currentUser);
   const currentRecipient = useUserStore((state) => state.currentRecipient);
-  const messages = useMessagesStore((state) => state.messages);
+  // const messages = useMessagesStore((state) => state.messages);
+  const { authUser } = useAuthStore();
+  const {
+    messages,
+    getMessages,
+    isMessagesLoading,
+    selectedUser,
+    subscribeToMessages,
+    unsubscribeFromMessages,
+    sendMessage,
+  } = useChatStore();
+  const messageEndRef = useRef<HTMLDivElement | null>(null);
+  const [content, setText] = useState("");
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
 
-  const handleMessageSend = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleMessageSend = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!currentRecipient || !currentMessage.trim()) return;
 
     const newMessage = {
-      senderId: currentUser.id,
-      recipientId: currentRecipient.id,
+      senderId: currentUser._id,
+      recipientId: currentRecipient._id,
       content: currentMessage.trim(),
     };
 
+    console.log("Sending message:", selectedUser?._id, currentRecipient._id);
     setCurrentMessage("");
+
+    try {
+      await sendMessage({
+        content: currentMessage.trim(),
+        senderId: `${currentUser._id}`,
+        recipientId: `${currentRecipient._id}`,
+      });
+
+      // Clear form
+      // setText("");
+      // setImagePreview(null);
+      if (fileInputRef.current) fileInputRef.current.value = "";
+    } catch (error) {
+      console.error("Failed to send message:", error);
+    }
   };
+
+  // useEffect(() => {
+  //   console.log("messages", messages);
+  //   if (messageEndRef.current && messages) {
+  //     messageEndRef.current.scrollIntoView({ behavior: "smooth" });
+  //   }
+  // }, [messages]);
+
+  useEffect(() => {
+    if (selectedUser?._id) getMessages(`${selectedUser?._id}`);
+
+    subscribeToMessages();
+
+    return () => unsubscribeFromMessages();
+  }, [
+    selectedUser?._id,
+    getMessages,
+    subscribeToMessages,
+    unsubscribeFromMessages,
+  ]);
 
   return (
     <div className="flex-1 flex flex-col">
       <div className="flex-1 flex flex-col p-[5px] overflow-auto max-h-[490px]">
         <div className="mt-auto">
-          {messages.map((message) => (
-            <div key={message.timestamp}>
-              <MessageItem message={message} key={message.id} />
-            </div>
-          ))}
+          {messages?.length > 0 &&
+            messages?.map((message) => (
+              <div key={message.updatedAt || message.createdAt}>
+                <MessageItem message={message} key={message._id} />
+              </div>
+            ))}
         </div>
       </div>
       <div className="p-[20px] px-[10px]">

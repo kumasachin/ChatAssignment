@@ -4,9 +4,9 @@ import bcrypt from "bcryptjs";
 import cloudinary from "../lib/cloudinary.js";
 
 export const signup = async (req, res) => {
-  const { name, email, password } = req.body;
+  const { name, password, profile } = req.body;
   try {
-    if (!name || !email || !password) {
+    if (!name || !password) {
       return res.status(400).json({ message: "All fields are required" });
     }
 
@@ -16,17 +16,17 @@ export const signup = async (req, res) => {
         .json({ message: "Password must be at least 6 characters" });
     }
 
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ name });
 
-    if (user) return res.status(400).json({ message: "Email already exists" });
+    if (user) return res.status(400).json({ message: "name already exists" });
 
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
     const newUser = new User({
       name,
-      email,
       password: hashedPassword,
+      profile,
     });
 
     if (newUser) {
@@ -37,7 +37,6 @@ export const signup = async (req, res) => {
       res.status(201).json({
         _id: newUser._id,
         name: newUser.name,
-        email: newUser.email,
         profile: newUser.profile,
       });
     } else {
@@ -50,16 +49,11 @@ export const signup = async (req, res) => {
 };
 
 export const login = async (req, res) => {
-  const { email, password } = req.body;
+  const { name, password } = req.body;
   try {
-    const user = await User.findOne({ email });
-
+    const user = await User.findOne({ name });
+    console.log("User found:", user);
     if (!user) {
-      return res.status(400).json({ message: "Invalid credentials" });
-    }
-
-    const isPasswordCorrect = await bcrypt.compare(password, user.password);
-    if (!isPasswordCorrect) {
       return res.status(400).json({ message: "Invalid credentials" });
     }
 
@@ -68,7 +62,6 @@ export const login = async (req, res) => {
     res.status(200).json({
       _id: user._id,
       name: user.name,
-      email: user.email,
       profile: user.profile,
     });
   } catch (error) {

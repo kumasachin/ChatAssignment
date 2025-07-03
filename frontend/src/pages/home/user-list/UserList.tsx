@@ -37,24 +37,21 @@ const UserList = () => {
       setCurrentRecipient(null);
       logout().then(() => {
         login({
-          email: user.email,
+          name: user.name,
           password: "123456", // Assuming a default password for demo purposes
         });
       });
     }
-
-    console.log("Current user after switch:", currentUser);
   };
 
-  const messageUser = (userId: number) => {
-    const user = _users?.find((user) => user._id === userId);
+  const messageUser = (userName: string) => {
+    const user = _users?.find((user) => user.name === userName);
     if (user) {
       setCurrentRecipient(user);
       setCurrentPage("chat");
       setSelectedUser({
         _id: user._id,
         name: user.name,
-        email: user.email,
       });
     }
   };
@@ -92,7 +89,7 @@ const UserList = () => {
               <UserCard user={user} />
               <div className="ml-auto">
                 <Button
-                  onClick={() => messageUser(user._id)}
+                  onClick={() => messageUser(user.name)}
                   disabled={user._id === currentUser._id}
                 >
                   Message

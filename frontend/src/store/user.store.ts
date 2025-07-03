@@ -4,7 +4,6 @@ export type User = {
   _id: number;
   name: string;
   profile?: string;
-  email: string;
 };
 
 type UserState = {
@@ -19,7 +18,6 @@ const useUserStore = create<UserState>()((set) => ({
     _id: 1,
     name: "Alisha",
     profile: "https://randomuser.me/api/portraits/women/89.jpg",
-    email: "",
   },
   setCurrentUser: (user: User) => set({ currentUser: user }),
   currentRecipient: null,

@@ -16,7 +16,6 @@ interface Message {
 interface User {
   _id: number;
   name: string;
-  email: string;
 }
 
 interface ChatStore {
