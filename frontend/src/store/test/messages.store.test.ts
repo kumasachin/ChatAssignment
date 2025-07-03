@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import useMessagesStore from "./messages.store";
+import useMessagesStore from "../messages.store";
 
 describe("Messages Store", () => {
   it("initializes with an empty messages array", () => {

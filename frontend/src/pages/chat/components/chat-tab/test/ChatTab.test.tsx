@@ -1,8 +1,8 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
-import ChatTab from "./ChatTab";
-import useMessagesStore from "../../../../store/messages.store";
-import useUserStore from "../../../../store/user.store";
+import ChatTab from "../ChatTab";
+// import useMessagesStore from "../../../../../store/messages.store";
+// import useUserStore from "../../../../store/user.store";
 
 vi.mock("../../../../store/messages.store", () => ({
   default: vi.fn(() => ({

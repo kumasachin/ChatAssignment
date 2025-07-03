@@ -6,7 +6,7 @@ import type { AxiosResponse } from "axios";
 import type { Socket } from "socket.io-client";
 
 const BASE_URL =
-  import.meta.env.MODE === "development" ? "http://localhost:5001" : "/";
+  import.meta.env.MODE === "development" ? "http://localhost:4001" : "/";
 interface AuthUser {
   _id: string;
   name: string;
@@ -44,9 +44,8 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
 
   checkAuth: async () => {
     try {
-      const res: AxiosResponse<AuthUser> = await axiosInstance.get(
-        "/auth/check"
-      );
+      const res: AxiosResponse<AuthUser> =
+        await axiosInstance.get("/auth/check");
       set({ authUser: res.data });
       get().connectSocket();
     } catch (error: unknown) {
