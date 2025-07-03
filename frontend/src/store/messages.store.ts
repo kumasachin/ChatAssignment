@@ -1,7 +1,7 @@
 import { create } from "zustand";
 
 export type Message = {
-  id: number;
+  _id: number;
   senderId: number;
   recipientId: number;
   content: string;
@@ -24,7 +24,7 @@ const useMessagesStore = create<MessagesState>()((set, get) => ({
   createMessage: (message: MessageInput) =>
     set((state) => {
       const newMessage: Message = {
-        id: state.messages.length + 1,
+        _id: state.messages.length + 1,
         senderId: message.senderId,
         recipientId: message.recipientId,
         content: message.content,

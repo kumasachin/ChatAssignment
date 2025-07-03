@@ -1,7 +1,7 @@
 import type { Message } from "../../../../../../store/messages.store.ts";
 
 type MessageProps = {
-  message: Message;
+  message: any;
 };
 
 const MessageItem = ({ message }: MessageProps) => {

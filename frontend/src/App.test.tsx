@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from "vitest";
 import { render } from "@testing-library/react";
-import App from "../App";
-import usePageStore from "../store/page.store";
+import App from "./App";
+import usePageStore from "./store/page.store";
 
 afterEach(() => {
   usePageStore.setState({ currentPage: "home" });

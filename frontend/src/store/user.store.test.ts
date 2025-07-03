@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from "vitest";
-import useMessagesStore from "../messages.store";
+import useMessagesStore from "./messages.store";
 
 describe("Messages Store", () => {
   beforeEach(() => {

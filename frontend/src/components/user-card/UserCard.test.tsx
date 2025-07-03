@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import UserCard from "../UserCard";
+import UserCard from "./UserCard";
 
 describe("UserCard Component", () => {
   it("renders the user's profile image and name", () => {

@@ -25,6 +25,7 @@ interface ChatStore {
   selectedUser: User | null;
   isUsersLoading: boolean;
   isMessagesLoading: boolean;
+
   getUsers: () => Promise<void>;
   getMessages: (userId: string) => Promise<void>;
   sendMessage: (messageData: {
@@ -47,8 +48,9 @@ export const useChatStore = create<ChatStore>((set, get) => ({
   getUsers: async () => {
     set({ isUsersLoading: true });
     try {
-      const res: AxiosResponse<User[]> =
-        await axiosInstance.get("/messages/users");
+      const res: AxiosResponse<User[]> = await axiosInstance.get(
+        "/messages/users"
+      );
       set({ users: res.data });
     } catch (error: any) {
       toast.error(error.response?.data?.message || "Failed to fetch users");
