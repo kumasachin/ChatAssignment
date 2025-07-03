@@ -1,0 +1,5 @@
+#!/bin/sh
+echo "Running pre-push checks..."
+npx tsc --noEmit
+npm run lint
+npm run test
