@@ -16,6 +16,7 @@ function App() {
         {page === "home" && <Home />}
         {page === "chat" && <Chat />}
       </Container>
+    </QueryClientProvider>
   );
 }
 
