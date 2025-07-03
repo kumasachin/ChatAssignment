@@ -1,0 +1,100 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`App Component > provides QueryClient context 1`] = `
+<div>
+  <div
+    class="w-full h-full border-[#cfcfcf] rounded-lg relative overflow-hidden"
+  >
+    <div
+      class="flex flex-col h-full"
+    >
+      <div
+        class="text-center py-8 px-4 bg-gradient-to-b from-white to-gray-50 border-b border-gray-100"
+      >
+        <div
+          class="flex flex-col items-center gap-3"
+        >
+          <img
+            alt="Logo"
+            class="w-[150px] drop-shadow-sm"
+            src="data:image/svg+xml,%3csvg%20class='h-9%20w-9%20sm:h-12%20sm:w-12%20fill-mm-pink'%20viewBox='0%200%2047%2048'%20fill='%23fb406c'%20xmlns='http://www.w3.org/2000/svg'%3e%3cpath%20fill-rule='evenodd'%20clip-rule='evenodd'%20d='M39.4135%205.85809C37.1986%205.57021%2035.0366%206.10288%2032.62%207.52659C29.9704%209.09129%2027.5401%2011.2259%2025.3977%2013.8696C24.7299%2014.6941%2024.1013%2015.546%2023.4962%2016.3978L23.4942%2016.3959C22.8891%2015.544%2022.2644%2014.6921%2021.5966%2013.8696C19.4542%2011.2239%2017.0239%209.09129%2014.3742%207.52659C11.9616%206.10288%209.80154%205.57021%207.58666%205.85809C3.32141%206.40446%200.31341%2010.6991%200.176327%2014.3631C0.0686185%2017.2693%201.24558%2019.678%202.13662%2021.2369C3.82079%2024.1763%206.42537%2027.0375%209.74866%2029.7948L9.5822%2030.2609C8.62654%2032.744%208.27208%2035.0862%208.74012%2037.7476C9.27279%2040.7693%2011.7716%2042.5318%2014.809%2042.1695C16.5754%2041.96%2018.0324%2041.161%2019.3602%2040.0545C21.0287%2038.6641%2022.3407%2036.9819%2023.4962%2035.1783C24.6535%2036.9819%2025.9637%2038.6641%2027.6322%2040.0545C28.9599%2041.161%2030.4169%2041.96%2032.1833%2042.1695C35.2207%2042.5318%2037.7195%2040.7693%2038.2522%2037.7476C38.7202%2035.0862%2038.3658%2032.744%2037.4101%2030.2609L37.2437%2029.7948C40.567%2027.0375%2043.1715%2024.1763%2044.8557%2021.2369C45.7487%2019.678%2046.9237%2017.2673%2046.816%2014.3631C46.6867%2010.6991%2043.6787%206.40446%2039.4135%205.85809Z'%3e%3c/path%3e%3c/svg%3e"
+          />
+          <h1
+            class="text-3xl font-bold text-gray-800 tracking-tight"
+          >
+            Muzz
+          </h1>
+          <p
+            class="text-gray-600 max-w-md"
+          >
+            Connect and chat with your friends in a simple and elegant way.
+          </p>
+        </div>
+      </div>
+      <div
+        class="p-6 flex-grow flex flex-col gap-6"
+      >
+        <div
+          class="bg-white rounded-xl p-4 shadow-sm border border-gray-100"
+        >
+          <div
+            class="flex items-center gap-3 mb-2"
+          >
+            <div
+              class="flex gap-2.5 items-center justify-center"
+            >
+              <img
+                alt="Alisha"
+                class="w-10 h-auto rounded-full"
+                src="https://randomuser.me/api/portraits/women/89.jpg"
+              />
+              <div
+                class="font-semibold"
+              >
+                Alisha
+              </div>
+            </div>
+            <div
+              class="text-sm text-gray-500"
+            >
+              Currently logged in as
+            </div>
+          </div>
+        </div>
+        <div
+          class="flex flex-col gap-4"
+        >
+          <div
+            class="flex flex-col md:flex-row gap-8"
+          >
+            <div
+              class="flex-1"
+            >
+              <h2
+                class="text-lg font-semibold mb-4"
+              >
+                Select Current User
+              </h2>
+              <div
+                class="flex flex-col gap-2.5"
+              />
+            </div>
+            <div
+              class="flex-1"
+            >
+              <h2
+                class="text-lg font-semibold mb-4"
+              >
+                Message Someone
+              </h2>
+              <div
+                class="flex flex-col gap-2.5"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
