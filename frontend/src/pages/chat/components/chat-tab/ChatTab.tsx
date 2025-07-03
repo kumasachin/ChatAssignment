@@ -1,9 +1,9 @@
 import { useState } from "react";
 import useUserStore from "../../../../store/user.store.ts";
-import MessageItem from "./components/message/MessageItem.tsx";
+import MessageItem from "./MessageItem.tsx";
 import { useAuthStore } from "../../../../store/auth.store";
-import type { Message } from "../../../../store/chat.store";
-import { useChatStore } from "../../../../store/chat.store";
+import type { Message } from "../../../../store/messages.store.ts";
+import { useChatStore } from "../../../../store/messages.store.ts";
 import { useEffect, useRef } from "react";
 import {
   getTimeDifferenceInSeconds,

@@ -1,36 +1,153 @@
-import { describe, it, expect } from "vitest";
-import { render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
-import Chat from "../Chat";
+import { describe, it, expect, beforeEach, vi } from "vitest";
+import { useAuthStore } from "../../../store/auth.store";
+import { axiosInstance } from "../../../lib/axios";
 
-describe("Chat Component", () => {
-  it("renders Header and Tabs components", () => {
-    render(<Chat />);
-    // expect(screen.getByRole("banner")).toBeInTheDocument(); // Assuming Header has a role="banner"
-    expect(screen.getByText("Chat")).toBeInTheDocument();
-    expect(screen.getByText("Profile")).toBeInTheDocument();
+vi.mock("../../../lib/axios", () => ({
+  axiosInstance: {
+    get: vi.fn(),
+    post: vi.fn(),
+    put: vi.fn(),
+  },
+}));
+
+vi.mock("socket.io-client", () => ({
+  io: vi.fn(() => ({
+    connect: vi.fn(),
+    disconnect: vi.fn(),
+    on: vi.fn(),
+  })),
+}));
+
+describe("useAuthStore", () => {
+  beforeEach(() => {
+    useAuthStore.setState({
+      authUser: null,
+      isSigningUp: false,
+      isLoggingIn: false,
+      isUpdatingProfile: false,
+      isCheckingAuth: true,
+      onlineUsers: [],
+      socket: null,
+    });
   });
 
-  //   it("renders ChatTab by default", () => {
-  //     render(<Chat />);
-  //     expect(screen.getByText("ChatTab Content")).toBeInTheDocument(); // Replace with actual content from ChatTab
-  //   });
+  it("should have default state", () => {
+    const state = useAuthStore.getState();
+    expect(state.authUser).toBeNull();
+    expect(state.isSigningUp).toBe(false);
+    expect(state.isLoggingIn).toBe(false);
+    expect(state.isUpdatingProfile).toBe(false);
+    expect(state.isCheckingAuth).toBe(true);
+    expect(state.onlineUsers).toEqual([]);
+    expect(state.socket).toBeNull();
+  });
 
-  //   it("renders ProfileTab when Profile tab is clicked", async () => {
-  //     render(<Chat />);
-  //     const profileTab = screen.getByText("Profile");
-  //     await userEvent.click(profileTab);
-  //     expect(screen.getByText("ProfileTab Content")).toBeInTheDocument(); // Replace with actual content from ProfileTab
-  //   });
+  it("should check authentication and update state", async () => {
+    const mockAuthUser = { _id: "1", name: "John", profile: "profile.jpg" };
+    (axiosInstance.get as jest.Mock).mockResolvedValue({ data: mockAuthUser });
 
-  //   it("switches back to ChatTab when Chat tab is clicked", async () => {
-  //     render(<Chat />);
-  //     const profileTab = screen.getByText("Profile");
-  //     await userEvent.click(profileTab);
-  //     expect(screen.getByText("ProfileTab Content")).toBeInTheDocument(); // Replace with actual content from ProfileTab
+    await useAuthStore.getState().checkAuth();
 
-  //     const chatTab = screen.getByText("Chat");
-  //     await userEvent.click(chatTab);
-  //     expect(screen.getByText("ChatTab Content")).toBeInTheDocument(); // Replace with actual content from ChatTab
-  //   });
+    const state = useAuthStore.getState();
+    expect(state.authUser).toEqual(mockAuthUser);
+    expect(state.isCheckingAuth).toBe(false);
+  });
+
+  it("should handle error during authentication check", async () => {
+    (axiosInstance.get as jest.Mock).mockRejectedValue(
+      new Error("Auth failed")
+    );
+
+    await useAuthStore.getState().checkAuth();
+
+    const state = useAuthStore.getState();
+    expect(state.authUser).toBeNull();
+    expect(state.isCheckingAuth).toBe(false);
+  });
+
+  it("should sign up a user and update state", async () => {
+    const mockAuthUser = { _id: "1", name: "John", profile: "profile.jpg" };
+    (axiosInstance.post as jest.Mock).mockResolvedValue({ data: mockAuthUser });
+
+    await useAuthStore.getState().signup({ name: "John", password: "123456" });
+
+    const state = useAuthStore.getState();
+    expect(state.authUser).toEqual(mockAuthUser);
+    expect(state.isSigningUp).toBe(false);
+  });
+
+  it("should handle error during signup", async () => {
+    (axiosInstance.post as jest.Mock).mockRejectedValue(
+      new Error("Signup failed")
+    );
+
+    await useAuthStore.getState().signup({ name: "John", password: "123456" });
+
+    const state = useAuthStore.getState();
+    expect(state.authUser).toBeNull();
+    expect(state.isSigningUp).toBe(false);
+  });
+
+  it("should log in a user and update state", async () => {
+    const mockAuthUser = { _id: "1", name: "John", profile: "profile.jpg" };
+    (axiosInstance.post as jest.Mock).mockResolvedValue({ data: mockAuthUser });
+
+    await useAuthStore.getState().login({ name: "John", password: "123456" });
+
+    const state = useAuthStore.getState();
+    expect(state.authUser).toEqual(mockAuthUser);
+    expect(state.isLoggingIn).toBe(false);
+  });
+
+  it("should handle error during login", async () => {
+    (axiosInstance.post as jest.Mock).mockRejectedValue(
+      new Error("Login failed")
+    );
+
+    await useAuthStore.getState().login({ name: "John", password: "123456" });
+
+    const state = useAuthStore.getState();
+    expect(state.authUser).toBeNull();
+    expect(state.isLoggingIn).toBe(false);
+  });
+
+  it("should log out a user and update state", async () => {
+    (axiosInstance.post as jest.Mock).mockResolvedValue({});
+
+    await useAuthStore.getState().logout();
+
+    const state = useAuthStore.getState();
+    expect(state.authUser).toBeNull();
+  });
+
+  it("should handle error during logout", async () => {
+    (axiosInstance.post as jest.Mock).mockRejectedValue(
+      new Error("Logout failed")
+    );
+
+    await useAuthStore.getState().logout();
+
+    const state = useAuthStore.getState();
+    expect(state.authUser).toBeNull();
+  });
+
+  it("should connect socket", () => {
+    useAuthStore.setState({
+      authUser: { _id: "1", name: "John", profile: "profile.jpg" },
+    });
+
+    useAuthStore.getState().connectSocket();
+
+    const state = useAuthStore.getState();
+    expect(state.socket).not.toBeNull();
+  });
+
+  it("should disconnect socket", () => {
+    const mockSocket = { disconnect: vi.fn(), connected: true };
+    useAuthStore.setState({ socket: mockSocket as any });
+
+    useAuthStore.getState().disconnectSocket();
+
+    expect(mockSocket.disconnect).toHaveBeenCalled();
+  });
 });

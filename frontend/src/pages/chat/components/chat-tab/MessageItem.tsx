@@ -13,7 +13,6 @@ const MessageItem = ({ message, type, isNotRecent }: MessageProps) => {
         } max-w-[60%] w-fit m-[10px]`}
         style={{ backgroundColor: "#F0F4FC" }}
       >
-        ss
         {message.content}
       </div>
     </div>

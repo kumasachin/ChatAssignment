@@ -1,7 +1,5 @@
 import { describe, it, expect, beforeEach } from "vitest";
-import useUserStore from "../user.store";
-
-// filepath: frontend/src/store/user.store.test.ts
+import useUserStore from "../../../store/user.store";
 
 describe("useUserStore", () => {
   beforeEach(() => {

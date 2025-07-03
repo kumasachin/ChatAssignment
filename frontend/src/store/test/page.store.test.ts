@@ -1,95 +1,28 @@
-import { describe, it, expect } from "vitest";
-import useMessagesStore from "../messages.store";
+import { describe, it, expect, beforeEach } from "vitest";
+import usePageStore from "../page.store";
 
-describe("Messages Store", () => {
+describe("usePageStore", () => {
   beforeEach(() => {
     // Reset the store state before each test
-    useMessagesStore.setState({ messages: [] });
-  });
-
-  it("initializes with an empty messages array", () => {
-    const { messages } = useMessagesStore.getState();
-    expect(messages).toEqual([]);
-  });
-
-  it("creates a new message and adds it to the store", () => {
-    const messageInput = {
-      senderId: 1,
-      recipientId: 2,
-      content: "Hello, World!",
-    };
-
-    useMessagesStore.getState().createMessage(messageInput);
-
-    const { messages } = useMessagesStore.getState();
-    expect(messages).toHaveLength(1);
-    expect(messages[0]).toMatchObject({
-      senderId: 1,
-      recipientId: 2,
-      content: "Hello, World!",
+    usePageStore.setState({
+      currentPage: "home",
     });
-    expect(messages[0].id).toBe(1);
-    expect(messages[0].timestamp).toBeDefined();
   });
 
-  it("creates multiple messages and assigns unique IDs", () => {
-    const messageInput1 = {
-      senderId: 1,
-      recipientId: 2,
-      content: "First message",
-    };
-
-    const messageInput2 = {
-      senderId: 2,
-      recipientId: 1,
-      content: "Second message",
-    };
-
-    useMessagesStore.getState().createMessage(messageInput1);
-    useMessagesStore.getState().createMessage(messageInput2);
-
-    const { messages } = useMessagesStore.getState();
-    expect(messages).toHaveLength(2);
-    expect(messages[0].id).toBe(1);
-    expect(messages[1].id).toBe(2);
+  it("should have the default currentPage as 'home'", () => {
+    const { currentPage } = usePageStore.getState();
+    expect(currentPage).toBe("home");
   });
 
-  it("preserves the order of messages", () => {
-    const messageInput1 = {
-      senderId: 1,
-      recipientId: 2,
-      content: "First message",
-    };
-
-    const messageInput2 = {
-      senderId: 2,
-      recipientId: 1,
-      content: "Second message",
-    };
-
-    useMessagesStore.getState().createMessage(messageInput1);
-    useMessagesStore.getState().createMessage(messageInput2);
-
-    const { messages } = useMessagesStore.getState();
-    expect(messages[0].content).toBe("First message");
-    expect(messages[1].content).toBe("Second message");
+  it("should update currentPage using setCurrentPage", () => {
+    usePageStore.getState().setCurrentPage("chat");
+    const { currentPage } = usePageStore.getState();
+    expect(currentPage).toBe("chat");
   });
 
-  it("handles empty input gracefully", () => {
-    const messageInput = {
-      senderId: 0,
-      recipientId: 0,
-      content: "",
-    };
-
-    useMessagesStore.getState().createMessage(messageInput);
-
-    const { messages } = useMessagesStore.getState();
-    expect(messages).toHaveLength(1);
-    expect(messages[0]).toMatchObject({
-      senderId: 0,
-      recipientId: 0,
-      content: "",
-    });
+  it("should update currentPage to 'profile'", () => {
+    usePageStore.getState().setCurrentPage("profile");
+    const { currentPage } = usePageStore.getState();
+    expect(currentPage).toBe("profile");
   });
 });

@@ -1,10 +1,10 @@
-import UserCard from "../../../components/user-card/UserCard.tsx";
-import Button from "../../../components/button/Button.tsx";
+import UserCard from "../../components/user-card/UserCard.tsx";
+import Button from "../../components/button/Button.tsx";
 import { useQuery } from "@tanstack/react-query";
-import useUserStore, { type User } from "../../../store/user.store.ts";
-import usePageStore from "../../../store/page.store.ts";
-import { useAuthStore } from "../../../store/auth.store.ts";
-import { useChatStore } from "../../../store/chat.store.ts";
+import useUserStore, { type User } from "../../store/user.store.ts";
+import usePageStore from "../../store/page.store.ts";
+import { useAuthStore } from "../../store/auth.store.ts";
+import { useChatStore } from "../../store/messages.store.ts";
 import { useEffect, useState } from "react";
 
 const UserList = () => {

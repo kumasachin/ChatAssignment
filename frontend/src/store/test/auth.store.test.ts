@@ -1,15 +1,9 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
-import { useAuthStore } from "../../../store/auth.store";
-import { axiosInstance } from "../../../lib/axios";
+import { useAuthStore } from "../auth.store";
+import { axiosInstance } from "../../lib/axios";
+import { io } from "socket.io-client";
 
-vi.mock("../../../lib/axios", () => ({
-  axiosInstance: {
-    get: vi.fn(),
-    post: vi.fn(),
-    put: vi.fn(),
-  },
-}));
-
+vi.mock("../../lib/axios");
 vi.mock("socket.io-client", () => ({
   io: vi.fn(() => ({
     connect: vi.fn(),
@@ -44,7 +38,7 @@ describe("useAuthStore", () => {
 
   it("should check authentication and update state", async () => {
     const mockAuthUser = { _id: "1", name: "John", profile: "profile.jpg" };
-    axiosInstance.get.mockResolvedValue({ data: mockAuthUser });
+    (axiosInstance.get as any).mockResolvedValue({ data: mockAuthUser });
 
     await useAuthStore.getState().checkAuth();
 
@@ -54,7 +48,7 @@ describe("useAuthStore", () => {
   });
 
   it("should handle error during authentication check", async () => {
-    axiosInstance.get.mockRejectedValue(new Error("Auth failed"));
+    (axiosInstance.get as any).mockRejectedValue(new Error("Auth failed"));
 
     await useAuthStore.getState().checkAuth();
 
@@ -65,7 +59,7 @@ describe("useAuthStore", () => {
 
   it("should sign up a user and update state", async () => {
     const mockAuthUser = { _id: "1", name: "John", profile: "profile.jpg" };
-    axiosInstance.post.mockResolvedValue({ data: mockAuthUser });
+    (axiosInstance.post as any).mockResolvedValue({ data: mockAuthUser });
 
     await useAuthStore.getState().signup({ name: "John", password: "123456" });
 
@@ -75,7 +69,7 @@ describe("useAuthStore", () => {
   });
 
   it("should handle error during signup", async () => {
-    axiosInstance.post.mockRejectedValue(new Error("Signup failed"));
+    (axiosInstance.post as any).mockRejectedValue(new Error("Signup failed"));
 
     await useAuthStore.getState().signup({ name: "John", password: "123456" });
 
@@ -86,7 +80,7 @@ describe("useAuthStore", () => {
 
   it("should log in a user and update state", async () => {
     const mockAuthUser = { _id: "1", name: "John", profile: "profile.jpg" };
-    axiosInstance.post.mockResolvedValue({ data: mockAuthUser });
+    (axiosInstance.post as any).mockResolvedValue({ data: mockAuthUser });
 
     await useAuthStore.getState().login({ name: "John", password: "123456" });
 
@@ -96,7 +90,7 @@ describe("useAuthStore", () => {
   });
 
   it("should handle error during login", async () => {
-    axiosInstance.post.mockRejectedValue(new Error("Login failed"));
+    (axiosInstance.post as any).mockRejectedValue(new Error("Login failed"));
 
     await useAuthStore.getState().login({ name: "John", password: "123456" });
 
@@ -106,7 +100,7 @@ describe("useAuthStore", () => {
   });
 
   it("should log out a user and update state", async () => {
-    axiosInstance.post.mockResolvedValue({});
+    (axiosInstance.post as any).mockResolvedValue({});
 
     await useAuthStore.getState().logout();
 
@@ -115,7 +109,7 @@ describe("useAuthStore", () => {
   });
 
   it("should handle error during logout", async () => {
-    axiosInstance.post.mockRejectedValue(new Error("Logout failed"));
+    (axiosInstance.post as any).mockRejectedValue(new Error("Logout failed"));
 
     await useAuthStore.getState().logout();
 
