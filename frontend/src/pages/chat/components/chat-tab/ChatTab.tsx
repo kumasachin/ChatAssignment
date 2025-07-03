@@ -1,22 +1,14 @@
 import { useState } from "react";
-import useMessagesStore from "../../../../store/messages.store.ts";
 import useUserStore from "../../../../store/user.store.ts";
 import MessageItem from "./components/message/MessageItem.tsx";
 import { useAuthStore } from "../../../../store/auth.store";
 import { useChatStore } from "../../../../store/chat.store";
-import type { Message } from "../../../../store/messages.store.ts";
 import { useEffect, useRef } from "react";
-
-type ExtendedMessage = Message & {
-  recipientId: string;
-  timestamp: string;
-};
 
 const ChatTab = () => {
   const [currentMessage, setCurrentMessage] = useState("");
   const currentUser = useUserStore((state) => state.currentUser);
   const currentRecipient = useUserStore((state) => state.currentRecipient);
-  // const messages = useMessagesStore((state) => state.messages);
   const { authUser } = useAuthStore();
   const {
     messages,
@@ -79,15 +71,33 @@ const ChatTab = () => {
     subscribeToMessages,
     unsubscribeFromMessages,
   ]);
+  useEffect(() => {
+    if (messageEndRef.current) {
+      messageEndRef.current.scrollTop = messageEndRef.current.scrollHeight;
+    }
+  }, [messages]);
+
+  console.log(messages);
 
   return (
     <div className="flex-1 flex flex-col">
-      <div className="flex-1 flex flex-col p-[5px] overflow-auto max-h-[490px]">
+      <div
+        className="flex-1 flex flex-col p-[5px] overflow-auto max-h-[490px]"
+        ref={messageEndRef}
+      >
         <div className="mt-auto">
           {messages?.length > 0 &&
             messages?.map((message) => (
               <div key={message.updatedAt || message.createdAt}>
-                <MessageItem message={message} key={message._id} />
+                <MessageItem
+                  message={message}
+                  key={message._id}
+                  type={
+                    `${selectedUser?._id}` === message.recipientId
+                      ? "sent"
+                      : "received"
+                  }
+                />
               </div>
             ))}
         </div>

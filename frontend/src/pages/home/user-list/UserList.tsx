@@ -59,7 +59,7 @@ const UserList = () => {
   useEffect(() => {
     getUsers();
   }, [getUsers]);
-  console.log("Users fetched:", _users);
+
   return (
     <div className="flex flex-col md:flex-row gap-8">
       <div className="flex-1">
