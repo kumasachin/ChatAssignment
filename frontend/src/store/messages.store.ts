@@ -1,11 +1,10 @@
-import type { ChatStore } from "../types/messages";
 import { create } from "zustand";
 import toast from "react-hot-toast";
 import { axiosInstance } from "../lib/axios";
 import { useAuthStore } from "./auth.store";
 import type { AxiosResponse } from "axios";
 import type { User } from "../types/auth";
-import type { Message } from "../types/messages";
+import type { Message,ChatStore } from "../types/messages";
 
 interface ChatStoreFun extends ChatStore {
   getUsers: () => Promise<void>;
@@ -44,6 +43,7 @@ export const useChatStore = create<ChatStoreFun>((set, get) => ({
   getMessages: async (userId: string) => {
     set({ isMessagesLoading: true });
     try {
+      const x = 1
       const res: AxiosResponse<Message[]> = await axiosInstance.get(
         `/messages/${userId}`
       );
