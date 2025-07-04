@@ -1,0 +1,4 @@
+. "$(dirname "$0")/_/husky.sh"
+
+echo "Running lint-staged for frontend..."
+npx lint-staged --config ../../lint-staged.config.js
