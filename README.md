@@ -132,3 +132,4 @@ The current backend is a simple Express.js server with basic user and message en
 - Husky is not working due to some deprecating command
 - further component breakup
 - Unit test coverage increase
+- Component could be further optimized and broken into smaller unit. 
