@@ -117,7 +117,8 @@ The current backend is a simple Express.js server with basic user and message en
   - `user-card`: User display component
 
 ### Key updates
-
+- There is not Change in Command for backend and frontend. For CORS error, please update localhost path in backed folder in files  backend/src/config.js and  
+- Please make sure to update correct 
 - implemented eslint, prettier, husky for git hook and lint staged
 - Express js mockserver setup with mongoDb as local mocks with websocket were not working.
 - added Test coverage using vitest
