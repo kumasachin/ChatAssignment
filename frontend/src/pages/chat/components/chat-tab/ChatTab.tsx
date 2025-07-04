@@ -28,7 +28,6 @@ const ChatTab = () => {
     e.preventDefault();
     if (!currentRecipient || !currentMessage.trim()) return;
 
-    console.log("Sending message:", selectedUser?._id, currentRecipient._id);
     setCurrentMessage("");
 
     try {
@@ -56,19 +55,19 @@ const ChatTab = () => {
     subscribeToMessages,
     unsubscribeFromMessages,
   ]);
+
   useEffect(() => {
     if (messageEndRef.current) {
       messageEndRef.current.scrollTop = messageEndRef.current.scrollHeight;
     }
   }, [messages]);
 
-  console.log(messages);
-
   return (
     <div className="flex-1 flex flex-col">
       <div
         className="flex-1 flex flex-col p-[5px] overflow-auto max-h-[490px]"
         ref={messageEndRef}
+        data-testid="message-container"
       >
         <div className="mt-auto">
           {messages?.length > 0 &&
@@ -79,9 +78,15 @@ const ChatTab = () => {
               );
 
               return (
-                <div key={message.updatedAt || message.createdAt}>
+                <div
+                  key={message.updatedAt || message.createdAt}
+                  data-testid="message-item"
+                >
                   {timeDifference >= 3600 && (
-                    <div className="flex justify-center text-xs text-gray-500 my-[6px]">
+                    <div
+                      className="flex justify-center text-xs text-gray-500 my-[6px]"
+                      data-testid="message-timestamp"
+                    >
                       {formatTimestamp(message.updatedAt || message.createdAt)}
                     </div>
                   )}
@@ -108,6 +113,7 @@ const ChatTab = () => {
         >
           <input
             type="text"
+            data-testid="message-input"
             placeholder={`Message ${currentRecipient?.name || ""}`}
             className="flex-1 rounded-full border-[8px] border-[#cfcfcf] px-[12px] py-[8px]"
             value={currentMessage}
