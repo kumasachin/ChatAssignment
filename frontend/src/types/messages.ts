@@ -1,3 +1,5 @@
+import type { AuthTypes } from "../types/auth";
+
 export namespace Messages {
   export interface Message {
     _id: string;
@@ -13,4 +15,12 @@ export namespace Messages {
     type?: MessageType;
     isNotRecent?: boolean;
   };
+
+  export interface ChatStore {
+    messages: Messages.Message[];
+    users: AuthTypes.User[];
+    selectedUser: AuthTypes.User | null;
+    isUsersLoading: boolean;
+    isMessagesLoading: boolean;
+  }
 }

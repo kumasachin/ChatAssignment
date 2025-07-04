@@ -4,19 +4,9 @@ import toast from "react-hot-toast";
 import { axiosInstance } from "../lib/axios";
 import { useAuthStore } from "./auth.store";
 import type { AxiosResponse } from "axios";
+import type { AuthTypes } from "../types/auth";
 
-interface User {
-  _id: number;
-  name: string;
-}
-
-interface ChatStore {
-  messages: Messages.Message[];
-  users: User[];
-  selectedUser: User | null;
-  isUsersLoading: boolean;
-  isMessagesLoading: boolean;
-
+interface ChatStore extends Messages.ChatStore {
   getUsers: () => Promise<void>;
   getMessages: (userId: string) => Promise<void>;
   sendMessage: (messageData: {
@@ -26,7 +16,7 @@ interface ChatStore {
   }) => Promise<void>;
   subscribeToMessages: () => void;
   unsubscribeFromMessages: () => void;
-  setSelectedUser: (selectedUser: User) => void;
+  setSelectedUser: (selectedUser: AuthTypes.User) => void;
 }
 
 export const useChatStore = create<ChatStore>((set, get) => ({
@@ -39,7 +29,7 @@ export const useChatStore = create<ChatStore>((set, get) => ({
   getUsers: async () => {
     set({ isUsersLoading: true });
     try {
-      const res: AxiosResponse<User[]> = await axiosInstance.get(
+      const res: AxiosResponse<AuthTypes.User[]> = await axiosInstance.get(
         "/messages/users"
       );
       set({ users: res.data });
@@ -53,7 +43,7 @@ export const useChatStore = create<ChatStore>((set, get) => ({
   getMessages: async (userId: string) => {
     set({ isMessagesLoading: true });
     try {
-      const res: AxiosResponse<Message[]> = await axiosInstance.get(
+      const res: AxiosResponse<Messages.Message[]> = await axiosInstance.get(
         `/messages/${userId}`
       );
       set({ messages: res.data });
@@ -78,7 +68,7 @@ export const useChatStore = create<ChatStore>((set, get) => ({
       return;
     }
     try {
-      const res: AxiosResponse<Message> = await axiosInstance.post(
+      const res: AxiosResponse<Messages.Message> = await axiosInstance.post(
         `/messages/send/${messageData.recipientId}`,
         messageData
       );
@@ -99,7 +89,7 @@ export const useChatStore = create<ChatStore>((set, get) => ({
       return;
     }
 
-    socket.on("newMessage", (newMessage: Message) => {
+    socket.on("newMessage", (newMessage: Messages.Message) => {
       const isMessageSentFromSelectedUser =
         newMessage.senderId === `${selectedUser._id}`;
       if (!isMessageSentFromSelectedUser) return;
@@ -117,5 +107,5 @@ export const useChatStore = create<ChatStore>((set, get) => ({
     }
   },
 
-  setSelectedUser: (selectedUser: User) => set({ selectedUser }),
+  setSelectedUser: (selectedUser: AuthTypes.User) => set({ selectedUser }),
 }));
