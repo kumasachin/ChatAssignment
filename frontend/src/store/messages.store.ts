@@ -1,10 +1,10 @@
-import { create } from "zustand";
-import toast from "react-hot-toast";
-import { axiosInstance } from "../lib/axios";
-import { useAuthStore } from "./auth.store";
-import type { AxiosResponse } from "axios";
-import type { User } from "../types/auth";
-import type { Message,ChatStore } from "../types/messages";
+import { create } from 'zustand';
+import toast from 'react-hot-toast';
+import { axiosInstance } from '../lib/axios';
+import { useAuthStore } from './auth.store';
+import type { AxiosResponse } from 'axios';
+import type { User } from '../types/auth';
+import type { Message, ChatStore } from '../types/messages';
 
 interface ChatStoreFun extends ChatStore {
   getUsers: () => Promise<void>;
@@ -29,12 +29,10 @@ export const useChatStore = create<ChatStoreFun>((set, get) => ({
   getUsers: async () => {
     set({ isUsersLoading: true });
     try {
-      const res: AxiosResponse<User[]> = await axiosInstance.get(
-        "/messages/users"
-      );
+      const res: AxiosResponse<User[]> = await axiosInstance.get('/messages/users');
       set({ users: res.data });
     } catch (error: any) {
-      toast.error(error.response?.data?.message || "Failed to fetch users");
+      toast.error(error.response?.data?.message || 'Failed to fetch users');
     } finally {
       set({ isUsersLoading: false });
     }
@@ -43,29 +41,22 @@ export const useChatStore = create<ChatStoreFun>((set, get) => ({
   getMessages: async (userId: string) => {
     set({ isMessagesLoading: true });
     try {
-      const x = 1
-      const res: AxiosResponse<Message[]> = await axiosInstance.get(
-        `/messages/${userId}`
-      );
+      const res: AxiosResponse<Message[]> = await axiosInstance.get(`/messages/${userId}`);
       set({ messages: res.data });
     } catch (error: any) {
-      toast.error(error.response?.data?.message || "Failed to fetch messages");
+      toast.error(error.response?.data?.message || 'Failed to fetch messages');
     } finally {
       set({ isMessagesLoading: false });
     }
   },
 
-  sendMessage: async (messageData: {
-    content: string;
-    recipientId: string;
-    senderId?: string;
-  }) => {
+  sendMessage: async (messageData: { content: string; recipientId: string; senderId?: string }) => {
     const { selectedUser, messages } = get();
 
-    console.log("Sending message to:", selectedUser?._id, messageData);
-    console.log("messageDatao:", messageData);
+    console.log('Sending message to:', selectedUser?._id, messageData);
+    console.log('messageDatao:', messageData);
     if (!selectedUser) {
-      toast.error("No user selected");
+      toast.error('No user selected');
       return;
     }
     try {
@@ -75,7 +66,7 @@ export const useChatStore = create<ChatStoreFun>((set, get) => ({
       );
       set({ messages: [...messages, res.data] });
     } catch (error: any) {
-      toast.error(error.response?.data?.message || "Failed to send message");
+      toast.error(error.response?.data?.message || 'Failed to send message');
     }
   },
 
@@ -86,13 +77,12 @@ export const useChatStore = create<ChatStoreFun>((set, get) => ({
     const socket = useAuthStore.getState().socket;
 
     if (!socket) {
-      toast.error("Socket connection is not available");
+      toast.error('Socket connection is not available');
       return;
     }
 
-    socket.on("newMessage", (newMessage: Message) => {
-      const isMessageSentFromSelectedUser =
-        newMessage.senderId === `${selectedUser._id}`;
+    socket.on('newMessage', (newMessage: Message) => {
+      const isMessageSentFromSelectedUser = newMessage.senderId === `${selectedUser._id}`;
       if (!isMessageSentFromSelectedUser) return;
 
       set({
@@ -104,7 +94,7 @@ export const useChatStore = create<ChatStoreFun>((set, get) => ({
   unsubscribeFromMessages: () => {
     const socket = useAuthStore.getState().socket;
     if (socket) {
-      socket.off("newMessage");
+      socket.off('newMessage');
     }
   },
 
