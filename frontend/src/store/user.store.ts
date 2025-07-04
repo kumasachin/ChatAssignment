@@ -1,27 +1,16 @@
 import { create } from "zustand";
+import type { AuthTypes } from "../types/auth";
 
-export type User = {
-  _id: number;
-  name: string;
-  profile?: string;
-};
-
-type UserState = {
-  currentUser: User;
-  setCurrentUser: (user: User) => void;
-  currentRecipient: User | null;
-  setCurrentRecipient: (user: User | null) => void;
-};
-
-const useUserStore = create<UserState>()((set) => ({
+const useUserStore = create<AuthTypes.UserState>()((set) => ({
   currentUser: {
     _id: 1,
     name: "Alisha",
     profile: "https://randomuser.me/api/portraits/women/89.jpg",
   },
-  setCurrentUser: (user: User) => set({ currentUser: user }),
+  setCurrentUser: (user: AuthTypes.User) => set({ currentUser: user }),
   currentRecipient: null,
-  setCurrentRecipient: (user: User | null) => set({ currentRecipient: user }),
+  setCurrentRecipient: (user: AuthTypes.User | null) =>
+    set({ currentRecipient: user }),
 }));
 
 export default useUserStore;

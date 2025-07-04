@@ -4,7 +4,7 @@ import UserCard from "../UserCard";
 describe("UserCard Component", () => {
   it("renders the user's profile image and name", () => {
     const mockUser = {
-      id: 1,
+      _id: 1,
       name: "John Doe",
       profile: "https://example.com/profile.jpg",
     };
@@ -22,7 +22,7 @@ describe("UserCard Component", () => {
 
   it("applies correct styles to the user card", () => {
     const mockUser = {
-      id: 1,
+      _id: 1,
       name: "Jane Doe",
       profile: "https://example.com/profile.jpg",
     };

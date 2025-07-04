@@ -1,11 +1,12 @@
 import UserCard from "../../components/user-card/UserCard.tsx";
 import Button from "../../components/button/Button.tsx";
 import { useQuery } from "@tanstack/react-query";
-import useUserStore, { type User } from "../../store/user.store.ts";
+import useUserStore from "../../store/user.store.ts";
 import usePageStore from "../../store/page.store.ts";
 import { useAuthStore } from "../../store/auth.store.ts";
 import { useChatStore } from "../../store/messages.store.ts";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import type { AuthTypes } from "../../types/auth.ts";
 
 const UserList = () => {
   const currentUser = useUserStore((state) => state.currentUser);
@@ -15,14 +16,9 @@ const UserList = () => {
   );
   const setCurrentPage = usePageStore((state) => state.setCurrentPage);
   const { login, logout } = useAuthStore();
-  const {
-    getUsers,
-    users: _users,
-    setSelectedUser,
-    isUsersLoading,
-  } = useChatStore();
+  const { getUsers, users: _users, setSelectedUser } = useChatStore();
 
-  const { data: users } = useQuery<User[]>({
+  const { data: users } = useQuery<AuthTypes.User[]>({
     queryKey: ["users"],
     queryFn: async () => fetch("/api/user/all.json").then((res) => res.json()),
   });
@@ -80,7 +76,6 @@ const UserList = () => {
           ))}
         </div>
       </div>
-
       <div className="flex-1">
         <h2 className="text-lg font-semibold mb-4">Message Someone</h2>
         <div className="flex flex-col gap-2.5">

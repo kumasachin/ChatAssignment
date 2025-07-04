@@ -4,24 +4,13 @@ import toast from "react-hot-toast";
 import { io } from "socket.io-client";
 import type { AxiosResponse } from "axios";
 import type { Socket } from "socket.io-client";
+import type { AuthTypes } from "../types/auth";
 
 const BASE_URL =
   import.meta.env.MODE === "development" ? "http://localhost:4001" : "/";
-interface AuthUser {
-  _id: string;
-  name: string;
-  profile: string;
-}
 
-interface AuthStore {
-  authUser: AuthUser | null;
-  isSigningUp: boolean;
-  isLoggingIn: boolean;
-  isUpdatingProfile: boolean;
-  isCheckingAuth: boolean;
-  onlineUsers: string[];
+interface AuthStore extends AuthTypes.AuthStore {
   socket: Socket | null;
-
   checkAuth: () => Promise<void>;
   signup: (data: Record<string, any>) => Promise<void>;
   login: (data: Record<string, any>) => Promise<void>;
@@ -42,7 +31,7 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
 
   checkAuth: async () => {
     try {
-      const res: AxiosResponse<AuthUser> =
+      const res: AxiosResponse<AuthTypes.AuthUser> =
         await axiosInstance.get("/auth/check");
       set({ authUser: res.data });
       get().connectSocket();
@@ -57,7 +46,7 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
   signup: async (data: Record<string, any>) => {
     set({ isSigningUp: true });
     try {
-      const res: AxiosResponse<AuthUser> = await axiosInstance.post(
+      const res: AxiosResponse<AuthTypes.AuthUser> = await axiosInstance.post(
         "/auth/signup",
         data
       );
@@ -74,7 +63,7 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
   login: async (data: Record<string, any>) => {
     set({ isLoggingIn: true });
     try {
-      const res: AxiosResponse<AuthUser> = await axiosInstance.post(
+      const res: AxiosResponse<AuthTypes.AuthUser> = await axiosInstance.post(
         "/auth/login",
         data
       );
@@ -102,7 +91,7 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
   updateProfile: async (data: Record<string, any>) => {
     set({ isUpdatingProfile: true });
     try {
-      const res: AxiosResponse<AuthUser> = await axiosInstance.put(
+      const res: AxiosResponse<AuthTypes.AuthUser> = await axiosInstance.put(
         "/auth/update-profile",
         data
       );

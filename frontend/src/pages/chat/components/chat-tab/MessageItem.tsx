@@ -1,10 +1,6 @@
-type MessageProps = {
-  message: { content: string; senderId: string; recipientId: string };
-  type?: "received" | "sent";
-  isNotRecent?: boolean;
-};
+import type { Messages } from "../../../../types/messages.ts";
 
-const MessageItem = ({ message, type, isNotRecent }: MessageProps) => {
+const MessageItem = ({ message, type, isNotRecent }: Messages.MessageProps) => {
   return type === "sent" ? (
     <div className="flex flex-col items-start">
       <div

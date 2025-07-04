@@ -1,17 +1,9 @@
+import type { Messages } from "../types/messages";
 import { create } from "zustand";
 import toast from "react-hot-toast";
 import { axiosInstance } from "../lib/axios";
 import { useAuthStore } from "./auth.store";
 import type { AxiosResponse } from "axios";
-
-export interface Message {
-  _id: string;
-  senderId: string;
-  recipientId: string;
-  content: string;
-  createdAt: string;
-  updatedAt?: string;
-}
 
 interface User {
   _id: number;
@@ -19,7 +11,7 @@ interface User {
 }
 
 interface ChatStore {
-  messages: Message[];
+  messages: Messages.Message[];
   users: User[];
   selectedUser: User | null;
   isUsersLoading: boolean;

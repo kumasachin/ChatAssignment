@@ -1,7 +1,7 @@
 import { useState } from "react";
 import useUserStore from "../../../../store/user.store.ts";
 import MessageItem from "./MessageItem.tsx";
-import type { Message } from "../../../../store/messages.store.ts";
+import type { Messages } from "../../../../types/messages.ts";
 import { useChatStore } from "../../../../store/messages.store.ts";
 import { useEffect, useRef } from "react";
 import {
@@ -71,7 +71,7 @@ const ChatTab = () => {
       >
         <div className="mt-auto">
           {messages?.length > 0 &&
-            messages?.map((message: Message, index: number) => {
+            messages?.map((message: Messages.Message, index: number) => {
               const timeDifference = getTimeDifferenceInSeconds(
                 message.updatedAt || message.createdAt,
                 messages[index - 1]?.updatedAt || messages[index - 1]?.createdAt
