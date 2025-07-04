@@ -1,7 +1,6 @@
 import { useState } from "react";
 import useUserStore from "../../../../store/user.store.ts";
 import MessageItem from "./MessageItem.tsx";
-import { useAuthStore } from "../../../../store/auth.store";
 import type { Message } from "../../../../store/messages.store.ts";
 import { useChatStore } from "../../../../store/messages.store.ts";
 import { useEffect, useRef } from "react";
@@ -14,29 +13,20 @@ const ChatTab = () => {
   const [currentMessage, setCurrentMessage] = useState("");
   const currentUser = useUserStore((state) => state.currentUser);
   const currentRecipient = useUserStore((state) => state.currentRecipient);
-  const { authUser } = useAuthStore();
   const {
     messages,
     getMessages,
-    isMessagesLoading,
     selectedUser,
     subscribeToMessages,
     unsubscribeFromMessages,
     sendMessage,
   } = useChatStore();
   const messageEndRef = useRef<HTMLDivElement | null>(null);
-  const [content, setText] = useState("");
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   const handleMessageSend = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!currentRecipient || !currentMessage.trim()) return;
-
-    const newMessage = {
-      senderId: currentUser._id,
-      recipientId: currentRecipient._id,
-      content: currentMessage.trim(),
-    };
 
     console.log("Sending message:", selectedUser?._id, currentRecipient._id);
     setCurrentMessage("");
@@ -48,21 +38,11 @@ const ChatTab = () => {
         recipientId: `${currentRecipient._id}`,
       });
 
-      // Clear form
-      // setText("");
-      // setImagePreview(null);
       if (fileInputRef.current) fileInputRef.current.value = "";
     } catch (error) {
       console.error("Failed to send message:", error);
     }
   };
-
-  // useEffect(() => {
-  //   console.log("messages", messages);
-  //   if (messageEndRef.current && messages) {
-  //     messageEndRef.current.scrollIntoView({ behavior: "smooth" });
-  //   }
-  // }, [messages]);
 
   useEffect(() => {
     if (selectedUser?._id) getMessages(`${selectedUser?._id}`);
@@ -124,6 +104,7 @@ const ChatTab = () => {
         <form
           onSubmit={(e) => handleMessageSend(e)}
           className="flex gap-[10px]"
+          data-testid="chat-tab-form"
         >
           <input
             type="text"

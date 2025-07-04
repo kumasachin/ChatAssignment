@@ -1,103 +1,91 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
 import ChatTab from "../ChatTab";
-// import useMessagesStore from "../../../../../store/messages.store";
-// import useUserStore from "../../../../store/user.store";
+import { useChatStore } from "../../../../../store/messages.store.ts";
 
-vi.mock("../../../../store/messages.store", () => ({
-  default: vi.fn(() => ({
-    messages: [],
-    createMessage: vi.fn(),
-  })),
-}));
+let mockUserStore = {
+  currentUser: { _id: "user1" },
+  currentRecipient: { _id: "user2", name: "Recipient" },
+};
 
-vi.mock("../../../../store/user.store", () => ({
-  default: vi.fn(() => ({
-    currentUser: { id: 1, name: "User1" },
-    currentRecipient: { id: 2, name: "User2" },
-  })),
-}));
+// let mockTimeUtils = {
+//   getTimeDifferenceInSeconds: jest.fn(() => 3600),
+//   formatTimestamp: jest.fn(() => "Formatted Timestamp"),
+// };
+
+// jest.mock("../../../../store/user.store.ts", () => ({
+//   __esModule: true,
+//   default: () => mockUserStore,
+// }));
+
+// jest.mock("../../../../utils/time.ts", () => mockTimeUtils);
+
+// afterEach(() => {
+//   // Reset mocks after each test
+//   useChatStore.getMessages.mockReset();
+//   useChatStore.subscribeToMessages.mockReset();
+//   mockChatStore.unsubscribeFromMessages.mockReset();
+//   mockChatStore.sendMessage.mockReset();
+//   mockTimeUtils.getTimeDifferenceInSeconds.mockReset();
+//   mockTimeUtils.formatTimestamp.mockReset();
+// });
 
 describe("ChatTab Component", () => {
-  beforeEach(() => {
-    vi.clearAllMocks();
-  });
-
-  it("renders the input field and placeholder text", () => {
+  it("renders correctly", () => {
+    useChatStore.setState({
+      messages: [
+        {
+          _id: "1",
+          senderId: "user1",
+          recipientId: "user2",
+          content: "Message Recipient",
+          createdAt: new Date().toISOString(),
+        },
+      ],
+    });
     render(<ChatTab />);
-    // const input = screen.getByPlaceholderText("Message User2");
-    // expect(input).not.toBeInTheDocument();
+
+    console.log(screen.debug());
+    const inputElement = screen.getByText("Message Recipient");
+    expect(inputElement).toBeInTheDocument();
   });
 
-  //   it("renders messages from the store", () => {
-  //     // (useMessagesStore as jest.Mock).mockReturnValue({
-  //     //   messages: [
-  //     //     {
-  //     //       id: 1,
-  //     //       senderId: 1,
-  //     //       recipientId: 2,
-  //     //       content: "Hello, User2!",
-  //     //       timestamp: "2025-07-01T12:00:00Z",
-  //     //     },
-  //     //   ],
-  //     //   createMessage: vi.fn(),
-  //     // });
-  //     useMessagesStore.setState({
-  //       messages: [
-  //         {
-  //           id: 1,
-  //           senderId: 1,
-  //           recipientId: 2,
-  //           content: "Hello, User2!",
-  //           timestamp: "2025-07-01T12:00:00Z",
-  //         },
-  //       ],
-  //       createMessage: vi.fn(),
-  //     });
-  //     // useUserStore.setState({
-  //     //   id: 100,
-  //     //   name: "Sachin",
-  //     //   profile: "https://randomuser.me/api/portraits/women/89.jpg",
-  //     // });
+  // it("prevents sending empty messages", () => {
+  //   render(<ChatTab />);
+  //   const form = screen.getByTestId("chat-tab-form");
+  //   fireEvent.submit(form);
+  //   expect(useChatStore.setState).not.toHaveBeenCalled();
+  // });
 
-  //     render(<ChatTab />);
-  //     expect(screen.getByText("Hello, User2!")).toBeInTheDocument();
+  // it("calls sendMessage with correct parameters", () => {
+  //   render(<ChatTab />);
+  //   const input = screen.getByPlaceholderText("Message Recipient");
+  //   fireEvent.change(input, { target: { value: "Test Message" } });
+  //   const form = screen.getByRole("form");
+  //   fireEvent.submit(form);
+
+  //   expect(mockChatStore.sendMessage).toHaveBeenCalledWith({
+  //     content: "Test Message",
+  //     senderId: "user1",
+  //     recipientId: "user2",
   //   });
+  // });
 
-  //   it("calls createMessage when a message is sent", () => {
-  //     const mockCreateMessage = vi.fn();
-  //     (useMessagesStore as jest.Mock).mockReturnValue({
-  //       messages: [],
-  //       createMessage: mockCreateMessage,
-  //     });
+  // it("calls getMessages when selectedUser._id changes", () => {
+  //   render(<ChatTab />);
+  //   expect(mockChatStore.getMessages).toHaveBeenCalledWith("user1");
+  // });
 
-  //     render(<ChatTab />);
-  //     const input = screen.getByPlaceholderText("Message User2");
-  //     const form = screen.getByRole("form");
+  // it("calls subscribeToMessages and unsubscribeFromMessages correctly", () => {
+  //   const { unmount } = render(<ChatTab />);
+  //   expect(mockChatStore.subscribeToMessages).toHaveBeenCalled();
+  //   unmount();
+  //   expect(mockChatStore.unsubscribeFromMessages).toHaveBeenCalled();
+  // });
 
-  //     fireEvent.change(input, { target: { value: "Hello, User2!" } });
-  //     fireEvent.submit(form);
-
-  //     expect(mockCreateMessage).toHaveBeenCalledWith({
-  //       senderId: 1,
-  //       recipientId: 2,
-  //       content: "Hello, User2!",
-  //     });
-  //     expect(input).toHaveValue(""); // Ensure input is cleared after sending
-  //   });
-
-  //   it("does not call createMessage if the input is empty", () => {
-  //     const mockCreateMessage = vi.fn();
-  //     (useMessagesStore as jest.Mock).mockReturnValue({
-  //       messages: [],
-  //       createMessage: mockCreateMessage,
-  //     });
-
-  //     render(<ChatTab />);
-  //     const form = screen.getByRole("form");
-
-  //     fireEvent.submit(form);
-
-  //     expect(mockCreateMessage).not.toHaveBeenCalled();
-  //   });
+  // it("renders messages correctly", () => {
+  //   render(<ChatTab />);
+  //   expect(screen.getByText("Hello")).toBeInTheDocument();
+  //   expect(screen.getByText("Hi")).toBeInTheDocument();
+  //   expect(screen.getByText("Formatted Timestamp")).toBeInTheDocument();
+  // });
 });
