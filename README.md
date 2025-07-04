@@ -118,9 +118,16 @@ The current backend is a simple Express.js server with basic user and message en
 
 ### Key updates
 
-- i have created a temprory express js server with mongodb to check data
 - implemented eslint, prettier, husky for git hook and lint staged
 - Express js mockserver setup with mongoDb as local mocks with websocket were not working.
 - added Test coverage using vitest
 - Implemented chat functionality.
 - Change folder structure and centralized the types
+- No change in command
+- Instead of 1 hour, i am showing time stamp on chat after 1 min for quick testing
+
+### Pending
+
+- Husky is not working due to some deprecating command
+- further component breakup
+- Unit test coverage increase

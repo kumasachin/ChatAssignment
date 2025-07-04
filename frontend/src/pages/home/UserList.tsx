@@ -1,32 +1,29 @@
-import UserCard from "../../components/user-card/UserCard.tsx";
-import Button from "../../components/button/Button.tsx";
-import { useQuery } from "@tanstack/react-query";
-import useUserStore from "../../store/user.store.ts";
-import usePageStore from "../../store/page.store.ts";
-import { useAuthStore } from "../../store/auth.store.ts";
-import { useChatStore } from "../../store/messages.store.ts";
-import { useEffect } from "react";
-import type { User } from "../../types/auth.ts";
+import UserCard from '../../components/user-card/UserCard.tsx';
+import Button from '../../components/button/Button.tsx';
+import { useQuery } from '@tanstack/react-query';
+import useUserStore from '../../store/user.store.ts';
+import usePageStore from '../../store/page.store.ts';
+import { useAuthStore } from '../../store/auth.store.ts';
+import { useChatStore } from '../../store/messages.store.ts';
+import { useEffect } from 'react';
+import type { User } from '../../types/auth.ts';
 
 const UserList = () => {
-  const currentUser = useUserStore((state) => state.currentUser);
-  const setCurrentUser = useUserStore((state) => state.setCurrentUser);
-  const setCurrentRecipient = useUserStore(
-    (state) => state.setCurrentRecipient
-  );
-  const setCurrentPage = usePageStore((state) => state.setCurrentPage);
+  const currentUser = useUserStore(state => state.currentUser);
+  const setCurrentUser = useUserStore(state => state.setCurrentUser);
+  const setCurrentRecipient = useUserStore(state => state.setCurrentRecipient);
+  const setCurrentPage = usePageStore(state => state.setCurrentPage);
   const { login, logout } = useAuthStore();
   const { getUsers, users: _users, setSelectedUser } = useChatStore();
 
   const { data: users } = useQuery<User[]>({
-    queryKey: ["users"],
-    queryFn: async () => fetch("/api/user/all.json").then((res) => res.json()),
+    queryKey: ['users'],
+    queryFn: async () => fetch('/api/user/all.json').then(res => res.json()),
   });
 
   const switchUser = (userId: number) => {
-    const user = users?.find((user) => user._id === userId);
+    const user = users?.find(user => user._id === userId);
 
-    console.log("Switching to user:", user);
     if (user) {
       setCurrentUser(user);
 
@@ -34,17 +31,19 @@ const UserList = () => {
       logout().then(() => {
         login({
           name: user.name,
-          password: "123456", // Assuming a default password for demo purposes
+          password: '123456', // Assuming a default password for demo purposes
+        }).then(() => {
+          getUsers();
         });
       });
     }
   };
 
   const messageUser = (userName: string) => {
-    const user = _users?.find((user) => user.name === userName);
+    const user = _users?.find(user => user.name === userName);
     if (user) {
       setCurrentRecipient(user);
-      setCurrentPage("chat");
+      setCurrentPage('chat');
       setSelectedUser({
         _id: user._id,
         name: user.name,
@@ -61,7 +60,7 @@ const UserList = () => {
       <div className="flex-1">
         <h2 className="text-lg font-semibold mb-4">Select Current User</h2>
         <div className="flex flex-col gap-2.5">
-          {users?.map((user) => (
+          {users?.map(user => (
             <div className="flex items-center" key={user._id}>
               <UserCard user={user} />
               <div className="ml-auto">
@@ -69,7 +68,7 @@ const UserList = () => {
                   onClick={() => switchUser(user._id)}
                   disabled={user._id === currentUser._id}
                 >
-                  {user._id === currentUser._id ? "Current User" : "Switch to"}
+                  {user._id === currentUser._id ? 'Current User' : 'Switch to'}
                 </Button>
               </div>
             </div>
@@ -79,7 +78,7 @@ const UserList = () => {
       <div className="flex-1">
         <h2 className="text-lg font-semibold mb-4">Message Someone</h2>
         <div className="flex flex-col gap-2.5">
-          {users?.map((user) => (
+          {users?.map(user => (
             <div className="flex items-center" key={user._id}>
               <UserCard user={user} />
               <div className="ml-auto">
