@@ -1,8 +1,8 @@
-import axios from "axios";
-import type { AxiosInstance } from "axios";
+import axios from 'axios';
+import type { AxiosInstance } from 'axios';
+import { BasePath } from '../config';
 
-const baseURL: string =
-  import.meta.env.MODE === "development" ? "http://localhost:4001/api" : "/api";
+const baseURL: string = `${BasePath}/api`;
 
 export const axiosInstance: AxiosInstance = axios.create({
   baseURL,

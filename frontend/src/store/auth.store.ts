@@ -5,8 +5,9 @@ import { io } from 'socket.io-client';
 import type { AxiosResponse } from 'axios';
 import type { Socket } from 'socket.io-client';
 import type { AuthStore, AuthUser } from '../types/auth';
+import { BasePath } from '../config';
 
-const BASE_URL = import.meta.env.MODE === 'development' ? 'http://localhost:4001' : '/';
+const BASE_URL = import.meta.env.MODE === 'development' ? `${BasePath}` : '/';
 
 interface AuthStoreFun extends AuthStore {
   socket: Socket | null;
