@@ -1,2 +1,4 @@
-cd "$(dirname "$0")/.." # go to frontend root
+. "$(dirname "$0")/_/husky.sh"
+
+echo "Husky pre-commit hook triggered"
 npx lint-staged

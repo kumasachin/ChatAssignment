@@ -1,6 +1,6 @@
-import type { AuthTypes } from "../../types/auth";
+import type { User } from "../../types/auth";
 
-const UserCard = ({ user }: { user: AuthTypes.User }) => {
+const UserCard = ({ user }: { user: User }) => {
   return (
     <div className="flex gap-2.5 items-center justify-center">
       <img

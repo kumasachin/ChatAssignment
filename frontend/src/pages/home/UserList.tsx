@@ -6,7 +6,7 @@ import usePageStore from "../../store/page.store.ts";
 import { useAuthStore } from "../../store/auth.store.ts";
 import { useChatStore } from "../../store/messages.store.ts";
 import { useEffect } from "react";
-import type { AuthTypes } from "../../types/auth.ts";
+import type { User } from "../../types/auth.ts";
 
 const UserList = () => {
   const currentUser = useUserStore((state) => state.currentUser);
@@ -18,7 +18,7 @@ const UserList = () => {
   const { login, logout } = useAuthStore();
   const { getUsers, users: _users, setSelectedUser } = useChatStore();
 
-  const { data: users } = useQuery<AuthTypes.User[]>({
+  const { data: users } = useQuery<User[]>({
     queryKey: ["users"],
     queryFn: async () => fetch("/api/user/all.json").then((res) => res.json()),
   });
