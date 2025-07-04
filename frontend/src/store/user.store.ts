@@ -5,7 +5,7 @@ const useUserStore = create<AuthTypes.UserState>()((set) => ({
   currentUser: {
     _id: 1,
     name: "Alisha",
-    profile: "https://randomuser.me/api/portraits/women/89.jpg",
+    profile: "https://randomuser.me/api/portraits/women/891.jpg",
   },
   setCurrentUser: (user: AuthTypes.User) => set({ currentUser: user }),
   currentRecipient: null,
