@@ -117,19 +117,19 @@ The current backend is a simple Express.js server with basic user and message en
   - `user-card`: User display component
 
 ### Key updates
-- There is not Change in Command for backend and frontend. For CORS error, please update localhost path in backed folder in files  backend/src/config.js and  
-- Please make sure to update correct 
-- implemented eslint, prettier, husky for git hook and lint staged
-- Express js mockserver setup with mongoDb as local mocks with websocket were not working.
-- added Test coverage using vitest
-- Implemented chat functionality.
+- There is no Change in Command for backend and frontend. For CORS error, please update localhost path in the backend folder in files  backend/src/config.js and frontend/src/config.ts. It's not a sophisticated solution but as temp. 
+- Please make sure to update correctly
+- Implemented eslint, prettier, husky for git hook and lint staged
+- Express js mock server setup with mongoDb as local mocks with websocket were not working.
+- Added Test coverage using vitest
+- Implement chat functionality.
 - Change folder structure and centralized the types
 - No change in command
-- Instead of 1 hour, i am showing time stamp on chat after 1 min for quick testing
+- Instead of 1 hour, code changed to  showing time stamp on chat after 1 min for quick testing
 
 ### Pending
 
 - Husky is not working due to some deprecating command
 - further component breakup
 - Unit test coverage increase
-- Component could be further optimized and broken into smaller unit. 
+- Components could be further optimized and broken into smaller units. 
