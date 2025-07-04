@@ -120,3 +120,7 @@ The current backend is a simple Express.js server with basic user and message en
 
 - i have created a temprory express js server with mongodb to check data
 - implemented eslint, prettier, husky for git hook and lint staged
+- Express js mockserver setup with mongoDb as local mocks with websocket were not working.
+- added Test coverage using vitest
+- Implemented chat functionality.
+- Change folder structure and centralized the types

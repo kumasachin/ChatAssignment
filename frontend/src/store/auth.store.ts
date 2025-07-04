@@ -1,15 +1,14 @@
-import { create } from "zustand";
-import { axiosInstance } from "../lib/axios";
-import toast from "react-hot-toast";
-import { io } from "socket.io-client";
-import type { AxiosResponse } from "axios";
-import type { Socket } from "socket.io-client";
-import type { AuthTypes } from "../types/auth";
+import { create } from 'zustand';
+import { axiosInstance } from '../lib/axios';
+import toast from 'react-hot-toast';
+import { io } from 'socket.io-client';
+import type { AxiosResponse } from 'axios';
+import type { Socket } from 'socket.io-client';
+import type { AuthStore, AuthUser } from '../types/auth';
 
-const BASE_URL =
-  import.meta.env.MODE === "development" ? "http://localhost:4001" : "/";
+const BASE_URL = import.meta.env.MODE === 'development' ? 'http://localhost:4001' : '/';
 
-interface AuthStore extends AuthTypes.AuthStore {
+interface AuthStoreFun extends AuthStore {
   socket: Socket | null;
   checkAuth: () => Promise<void>;
   signup: (data: Record<string, any>) => Promise<void>;
@@ -20,7 +19,7 @@ interface AuthStore extends AuthTypes.AuthStore {
   disconnectSocket: () => void;
 }
 
-export const useAuthStore = create<AuthStore>((set, get) => ({
+export const useAuthStore = create<AuthStoreFun>((set, get) => ({
   authUser: null,
   isSigningUp: false,
   isLoggingIn: false,
@@ -31,12 +30,11 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
 
   checkAuth: async () => {
     try {
-      const res: AxiosResponse<AuthTypes.AuthUser> =
-        await axiosInstance.get("/auth/check");
+      const res: AxiosResponse<AuthUser> = await axiosInstance.get('/auth/check');
       set({ authUser: res.data });
       get().connectSocket();
     } catch (error: unknown) {
-      console.error("Error in checkAuth:", error);
+      console.error('Error in checkAuth:', error);
       set({ authUser: null });
     } finally {
       set({ isCheckingAuth: false });
@@ -46,15 +44,12 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
   signup: async (data: Record<string, any>) => {
     set({ isSigningUp: true });
     try {
-      const res: AxiosResponse<AuthTypes.AuthUser> = await axiosInstance.post(
-        "/auth/signup",
-        data
-      );
+      const res: AxiosResponse<AuthUser> = await axiosInstance.post('/auth/signup', data);
       set({ authUser: res.data });
-      toast.success("Account created successfully");
+      toast.success('Account created successfully');
       get().connectSocket();
     } catch (error: any) {
-      toast.error(error.response?.data?.message || "Signup failed");
+      toast.error(error.response?.data?.message || 'Signup failed');
     } finally {
       set({ isSigningUp: false });
     }
@@ -63,15 +58,12 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
   login: async (data: Record<string, any>) => {
     set({ isLoggingIn: true });
     try {
-      const res: AxiosResponse<AuthTypes.AuthUser> = await axiosInstance.post(
-        "/auth/login",
-        data
-      );
+      const res: AxiosResponse<AuthUser> = await axiosInstance.post('/auth/login', data);
       set({ authUser: res.data });
-      toast.success("Logged in successfully");
+      toast.success('Logged in successfully');
       get().connectSocket();
     } catch (error: any) {
-      toast.error(error.response?.data?.message || "Login failed");
+      toast.error(error.response?.data?.message || 'Login failed');
     } finally {
       set({ isLoggingIn: false });
     }
@@ -79,27 +71,24 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
 
   logout: async () => {
     try {
-      await axiosInstance.post("/auth/logout");
+      await axiosInstance.post('/auth/logout');
       set({ authUser: null });
-      toast.success("Logged out successfully");
+      toast.success('Logged out successfully');
       get().disconnectSocket();
     } catch (error: any) {
-      toast.error(error.response?.data?.message || "Logout failed");
+      toast.error(error.response?.data?.message || 'Logout failed');
     }
   },
 
   updateProfile: async (data: Record<string, any>) => {
     set({ isUpdatingProfile: true });
     try {
-      const res: AxiosResponse<AuthTypes.AuthUser> = await axiosInstance.put(
-        "/auth/update-profile",
-        data
-      );
+      const res: AxiosResponse<AuthUser> = await axiosInstance.put('/auth/update-profile', data);
       set({ authUser: res.data });
-      toast.success("Profile updated successfully");
+      toast.success('Profile updated successfully');
     } catch (error: any) {
-      console.error("Error in updateProfile:", error);
-      toast.error(error.response?.data?.message || "Profile update failed");
+      console.error('Error in updateProfile:', error);
+      toast.error(error.response?.data?.message || 'Profile update failed');
     } finally {
       set({ isUpdatingProfile: false });
     }
@@ -118,7 +107,7 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
 
     set({ socket });
 
-    socket.on("getOnlineUsers", (userIds: string[]) => {
+    socket.on('getOnlineUsers', (userIds: string[]) => {
       set({ onlineUsers: userIds });
     });
   },
