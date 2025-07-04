@@ -1,4 +1,6 @@
 . "$(dirname "$0")/_/husky.sh"
 
 echo "Husky pre-commit hook triggered"
-npx lint-staged
+
+# Run lint-staged only for files in the frontend folder
+npx lint-staged --config ./lint-staged.config.js
