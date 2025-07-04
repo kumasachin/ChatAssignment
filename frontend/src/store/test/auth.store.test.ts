@@ -1,7 +1,6 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
 import { useAuthStore } from "../auth.store";
 import { axiosInstance } from "../../lib/axios";
-import { io } from "socket.io-client";
 
 vi.mock("../../lib/axios");
 vi.mock("socket.io-client", () => ({

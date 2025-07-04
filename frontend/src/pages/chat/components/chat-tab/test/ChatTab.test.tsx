@@ -1,14 +1,13 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import { describe, it, expect, vi, afterEach } from "vitest";
 import ChatTab from "../ChatTab";
-// import { useChatStore } from "../../../../../store/messages.store.ts";
 
-let mockUserStore = {
+const mockUserStore = {
   currentUser: { _id: "user1" },
   currentRecipient: { _id: "user2", name: "Recipient" },
 };
 
-let mockChatStore = {
+const mockChatStore = {
   messages: [
     {
       _id: "msg1",
@@ -30,7 +29,7 @@ let mockChatStore = {
   selectedUser: { _id: "user1" },
 };
 
-let mockTimeUtils = {
+const mockTimeUtils = {
   getTimeDifferenceInSeconds: vi.fn(() => 3600),
   formatTimestamp: vi.fn(() => "Formatted Timestamp"),
 };
